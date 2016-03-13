@@ -58,7 +58,61 @@ void move(float dist, int direction) {
       mav(MOT_RIGHT, MOT_RIGHT_SPEED);
       frontGoal = dist * CMtoBEMF * ANGLEADJUST;
       rightGoal = dist * CMtoBEMF * ANGLEADJUST;
-    break;    
+    break;
+    //Right
+    case 90:
+      mav(MOT_FRONT, MOT_FRONT_SPEED);
+      mav(MOT_LEFT, -MOT_LEFT_SPEED);
+      mav(MOT_RIGHT, MOT_RIGHT_SPEED);
+      frontGoal = dist * CMtoBEMF;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    //Left
+    case 270:
+      mav(MOT_FRONT, -MOT_FRONT_SPEED);
+      mav(MOT_LEFT, MOT_LEFT_SPEED);
+      mav(MOT_RIGHT, -MOT_RIGHT_SPEED);
+      frontGoal = dist * CMtoBEMF;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    //ForwardRight
+    case 30:
+      mav(MOT_FRONT, MOT_FRONT_SPEED);
+      mav(MOT_LEFT, MOT_LEFT_SPEED);
+      mav(MOT_RIGHT, MOT_RIGHT_SPEED);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF;
+    break;
+    //Reverse ForwardRight
+    case 210:
+      mav(MOT_FRONT, -MOT_FRONT_SPEED);
+      mav(MOT_LEFT, -MOT_LEFT_SPEED);
+      mav(MOT_RIGHT, -MOT_RIGHT_SPEED);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF;
+    break;
+    //ForwardLeft
+    case 330:
+      mav(MOT_FRONT, -MOT_FRONT_SPEED);
+      mav(MOT_LEFT, MOT_LEFT_SPEED);
+      mav(MOT_RIGHT, MOT_RIGHT_SPEED);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    //Reverse ForwardLeft
+    case 150:
+      mav(MOT_FRONT, MOT_FRONT_SPEED);
+      mav(MOT_LEFT, -MOT_LEFT_SPEED);
+      mav(MOT_RIGHT, -MOT_RIGHT_SPEED);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
     default:
       printf("Trying to turn an unsupported direction");
     break;
@@ -78,6 +132,137 @@ void move(float dist, int direction) {
   }
   ao();
 }
+
+void move_at_speed(float dist, int direction, int speed) {
+  //Stop movement and clear positions
+  ao();
+  clear_all_positions();
+  //Constants and stuff
+  int leftGoal = 0;
+  int rightGoal = 0;
+  int frontGoal = 0;
+  direction = (direction + 360)%360;
+  if(direction < 0)
+    direction *= -1;
+  
+  //Imagine this as a huge if else statement where condition is direction == case. Target and initial speeds set here.
+  switch(direction) {
+    //Forward
+    case 0:
+  	  mav(MOT_LEFT, speed);
+      mav(MOT_RIGHT, speed);
+      leftGoal = dist * CMtoBEMF * ANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * ANGLEADJUST;
+    break;
+    //Backward
+    case 180:
+      mav(MOT_LEFT, -speed);
+      mav(MOT_RIGHT, -speed);
+      leftGoal = dist * CMtoBEMF * ANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * ANGLEADJUST;
+    break;
+    //Weak BackRight
+    case 120:
+      mav(MOT_FRONT, speed);
+      mav(MOT_LEFT, -speed);
+      frontGoal = dist * CMtoBEMF * ANGLEADJUST;
+      leftGoal = dist * CMtoBEMF * ANGLEADJUST;
+    break;
+    //Reverse Weak BackRight
+    case 300:
+      mav(MOT_FRONT, -speed);
+      mav(MOT_LEFT, speed);
+      frontGoal = dist * CMtoBEMF * ANGLEADJUST;
+      leftGoal = dist * CMtoBEMF * ANGLEADJUST;
+    break;
+    //Weak BackLeft
+    case 240:
+      mav(MOT_FRONT, -speed);
+      mav(MOT_RIGHT, -speed);
+      frontGoal = dist * CMtoBEMF * ANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * ANGLEADJUST;
+    break;
+    //Weak Reverse BackLeft
+    case 60:
+      mav(MOT_FRONT, speed);
+      mav(MOT_RIGHT, speed);
+      frontGoal = dist * CMtoBEMF * ANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * ANGLEADJUST;
+    break;
+    //Right
+    case 90:
+      mav(MOT_FRONT, speed);
+      mav(MOT_LEFT, -speed);
+      mav(MOT_RIGHT, speed);
+      frontGoal = dist * CMtoBEMF;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    //Left
+    case 270:
+      mav(MOT_FRONT, -speed);
+      mav(MOT_LEFT, speed);
+      mav(MOT_RIGHT, -speed);
+      frontGoal = dist * CMtoBEMF;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    //ForwardRight
+    case 30:
+      mav(MOT_FRONT, speed);
+      mav(MOT_LEFT, speed);
+      mav(MOT_RIGHT, speed);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF;
+    break;
+    //Reverse ForwardRight
+    case 210:
+      mav(MOT_FRONT, -speed);
+      mav(MOT_LEFT, -speed);
+      mav(MOT_RIGHT, -speed);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      rightGoal = dist * CMtoBEMF;
+    break;
+    //ForwardLeft
+    case 330:
+      mav(MOT_FRONT, -speed);
+      mav(MOT_LEFT, speed);
+      mav(MOT_RIGHT, speed);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    //Reverse ForwardLeft
+    case 150:
+      mav(MOT_FRONT, speed);
+      mav(MOT_LEFT, -speed);
+      mav(MOT_RIGHT, -speed);
+      frontGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+      leftGoal = dist * CMtoBEMF;
+      rightGoal = dist * CMtoBEMF * LARGEANGLEADJUST;
+    break;
+    default:
+      printf("Trying to turn an unsupported direction");
+    break;
+  }
+  
+  //Wait until conditions met
+  while(abs(gmpc(MOT_LEFT)) < abs(leftGoal) || abs(gmpc(MOT_RIGHT)) < abs(rightGoal) || abs(gmpc(MOT_FRONT)) < abs(frontGoal)) {
+    if(abs(gmpc(MOT_LEFT)) >= abs(leftGoal)) {
+      off(MOT_LEFT);
+    }
+    if(abs(gmpc(MOT_RIGHT)) >= abs(rightGoal)) {
+      off(MOT_RIGHT);
+    }
+    if(abs(gmpc(MOT_FRONT)) >= abs(frontGoal)) {
+      off(MOT_FRONT);
+    }
+  }
+  ao();
+}
+
 
 //In place turn for degrees amount of degrees. Negative values turn left.
 void right(float degrees) {

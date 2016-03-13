@@ -23,7 +23,10 @@
 
 //Miscellaneous constants
 #define CMtoBEMF (1400/(M_PI*WHEELDIAMETER))
-#define ANGLEADJUST 1.1547
+#define ANGLEADJUST 1.154701
+#define LARGEANGLEADJUST 2
+
+void move_at_speed(float dist, int direction, int speed);
 
 void move(float dist, int direction); 
 
