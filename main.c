@@ -7,74 +7,63 @@
 #define GRABBER_PORT 0
 #define CLAW_CLOSED 850
 #define CLAW_OPEN 1600
-#define ARM_PICKUP 1900
+#define ARM_PICKUP 1850
 #define ARM_DUMP 798
-#define ARM_UP 1700
+#define ARM_UP 800
 #define ARM_DOWN 2047
 #define GRABBER_OPEN 0
-#define GRABBER_CLOSED 900
+#define GRABBER_CLOSED 2047
 #define LIGHT_LEFT 5
 #define LIGHT_RIGHT 4
 
 //if value < 200, it is on white, if value > 3000, it is on black
 
-void line_follow();
 void arm_pickup();
 void arm_up();
+void arm_dump();
+void arm_down();
 void grabber_open();
 void grabber_close();
 void claw_open();
-void claw_closed();
-
-void line_follow(int dist) 
-{
-  cmpc(MOT_LEFT);
-  cmpc(MOT_RIGHT);
-  int lGoal = dist * CMtoBEMF * ANGLEADJUST;
-  int rGoal = dist * CMtoBEMF * ANGLEADJUST;
-          mav(MOT_RIGHT, MOT_RIGHT_SPEED);
-          mav(MOT_LEFT, MOT_LEFT_SPEED);
-        while(gmpc(MOT_LEFT)<lGoal && gmpc(MOT_RIGHT)<rGoal)
-        {
-          if(analog(LIGHT_RIGHT) < 1500 && analog(LIGHT_LEFT) < 1500)
-          {
-              mav(MOT_FRONT, 0);
-          }
-          else if(analog(LIGHT_RIGHT) > 1500)
-          {
-              while(analog(LIGHT_LEFT) < 1500)
-              {
-                  mav(MOT_FRONT, 200);
-              }
-          }
-          else if (analog(LIGHT_LEFT) > 1500)
-          {
-              while(analog(LIGHT_RIGHT) < 1500)
-              {
-                  mav(MOT_FRONT, -200);
-              }
-          }
-      }
-}
+void claw_close();
+void straighten();
 
 void arm_pickup()
 {
   set_servo_position(ARM_PORT, ARM_PICKUP);
+  msleep(500);
+}
+
+void arm_down()
+{
+  set_servo_position(ARM_PORT, ARM_DOWN);
+  msleep(500);
 }
 
 void arm_up()
 {
+  set_servo_position(ARM_PORT,ARM_UP+600);
+  msleep(3000);
   set_servo_position(ARM_PORT,ARM_UP);
+  msleep(3000);
+}
+
+void arm_dump()
+{
+  set_servo_position(ARM_PORT,ARM_DUMP);
+  msleep(500);
 }
 
 void grabber_open()
 {
   set_servo_position(GRABBER_PORT,GRABBER_OPEN);
+  msleep(500);
 }
 
 void grabber_close()
 {
   set_servo_position(GRABBER_PORT,GRABBER_CLOSED);
+  msleep(1500);
 }
 
 void claw_open()  {  set_servo_position(CLAW_PORT, CLAW_OPEN);  }
@@ -83,11 +72,34 @@ void claw_close() {  set_servo_position(CLAW_PORT, CLAW_CLOSED);  }
 
 int main()
 {	
-  	
+  	enable_servos();
+  	arm_dump(); //DO NOT COMMENT OUT
+  	msleep(200);
+  
+  	claw_open();
+  	//arm_down();
+  	//move(30,0);
+    straighten();
+    line_follow(99999);
+  	msleep(3000);
+  	claw_close();
+  	msleep(2000);
+  	arm_up();
+  /*
+  	grabber_open();
+  	msleep(200);
+  	move(30,180);
+  	grabber_close();
+  	arm_up();
+  	msleep(200);
+  
+  */
+  
+  	/*
   	clear_all_positions();
   	arm_up();
   	tempcameratestfunction();
-      /*
+    
   	mtp(2, 800, 1400);
   	msleep(8000);
   	
@@ -101,19 +113,16 @@ int main()
   	arm_up();
   	msleep(500);
   	claw_open();
-  	//grabber_open();
+  	//grabber_open();*/
   	
   	//drive to first group of poms
-  	arm_pickup();
-    move(83.82, FORWARD);
-  	while(LIGHT_LEFT > 200 && LIGHT_RIGHT > 200)
-    {
-        if(LIGHT_RIGHT > 2600)
-            move_at_speed(1, RIGHT, 200); 
-        else if(LIGHT_LEFT > 2600)
-            move_at_speed(1, LEFT, 200);
-    }
-  */
+  	//arm_pickup();
+  
+  
+    //move(83.82, FORWARD);
+  	//straighten();
+  
+  
   	
   	/*claw_close(); //pick up poms
   	msleep(500);
@@ -136,11 +145,9 @@ int main()
     right(74);
   	move(60, FORWARD);
     
-  
-  	disable_servos();*/
-    /*
-  	line_follow();
+  */
+  	disable_servos();
+  	//line_follow(99999);
   	msleep(5000);
-    */
     return 0;
 }

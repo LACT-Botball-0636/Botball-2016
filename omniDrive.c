@@ -3,6 +3,78 @@
 
 //Drives forward dist in cm, towards direction degrees starting at 12:00 going clockwise
 //Split into 3 segments. 1st segment sets up constants and flips 
+
+void straighten()
+{
+//	while(analog(LIGHT_LEFT) > 2000 || analog(LIGHT_RIGHT) > 2000)
+//    {
+      	printf("pootis is allah\n");
+    
+       	if(analog(LIGHT_LEFT) > 2000)
+        {
+          mav(MOT_FRONT, -500);
+          mav(MOT_LEFT, 500);
+          mav(MOT_RIGHT, -500);
+            while(analog(LIGHT_RIGHT) < 2000)
+            {
+            	msleep(1);
+            }
+          	ao();
+        }
+      	else //if(analog(LIGHT_RIGHT) > 2000) 
+        {
+          //catches all other situations
+          mav(MOT_FRONT, 500);
+          mav(MOT_LEFT, -500);
+          mav(MOT_RIGHT, 500);
+          	while(analog(LIGHT_LEFT) < 2000)
+            {
+              	msleep(1);  
+            }
+          	ao();
+        }
+    }
+/*  
+  	if(analog(LIGHT_LEFT) < 2000 || analog(LIGHT_RIGHT) < 2000)
+    {
+      while(analog(LIGHT_LEFT) < 2000)
+      {
+        move_at_speed(1, RIGHT, 500);  
+      }
+      move_at_speed(2, LEFT, 500);
+      break;
+    } */
+//}
+
+void line_follow(int dist) 
+{
+  cmpc(MOT_LEFT);
+  cmpc(MOT_RIGHT);
+  int lGoal = dist * CMtoBEMF * ANGLEADJUST;
+  int rGoal = dist * CMtoBEMF * ANGLEADJUST;
+          mav(MOT_RIGHT, MOT_RIGHT_SPEED);
+          mav(MOT_LEFT, MOT_LEFT_SPEED);
+        while(gmpc(MOT_LEFT)<lGoal && gmpc(MOT_RIGHT)<rGoal)
+        {
+          if(analog(LIGHT_RIGHT) < 1500 && analog(LIGHT_LEFT) < 1500)
+          {
+              mav(MOT_FRONT, 0);
+          }
+          else if(analog(LIGHT_RIGHT) > 1500)
+          {
+             
+                  mav(MOT_FRONT, 200);
+              
+          }
+          else if (analog(LIGHT_LEFT) > 1500)
+          {
+              
+                  mav(MOT_FRONT, -200);
+              
+          }
+      }
+}
+
 void move(float dist, int direction) {
   //Stop movement and clear positions
   ao();

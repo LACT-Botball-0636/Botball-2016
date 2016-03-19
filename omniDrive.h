@@ -21,10 +21,18 @@
 #define WHEELRADIUS 2.5
 #define ROBOTRADIUS 14 
 
+//Light sensor ports
+#define LIGHT_LEFT 5
+#define LIGHT_RIGHT 4
+
+
+
 //Miscellaneous constants
 #define CMtoBEMF (1400/(M_PI*WHEELDIAMETER))
 #define ANGLEADJUST 1.154701
 #define LARGEANGLEADJUST 2
+
+void line_follow(int dist);
 
 void move_at_speed(float dist, int direction, int speed);
 
@@ -33,5 +41,7 @@ void move(float dist, int direction);
 void right(float degrees);
 
 void left(float degrees);
+
+void straighten();
 
 void clear_all_positions();
