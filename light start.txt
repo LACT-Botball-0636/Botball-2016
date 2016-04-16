@@ -30,7 +30,7 @@ int light_start()
       state = REGULAR;
     }
   }
-  while(digital(GOLD_TOUCH) > avg)
+  while(analog(LIGHT_PORT) > avg)
   {
     msleep(1);
   }
