@@ -1,6 +1,5 @@
 //
 //  Create.h
-//  Source written by Justin Yu
 //
 
 #include <kipr/botball.h>
