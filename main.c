@@ -31,6 +31,7 @@
 #define REGULAR 0
 #define DEALT 1
 
+
 void servo_slow(int initial, int final,int port)
 {
   int i;
